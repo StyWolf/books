@@ -3,7 +3,7 @@
 
 import sys, urllib, urllib2, re, time
 from bs4 import BeautifulSoup
-
+import login
 #防止编码错误
 reload(sys)
 sys.setdefaultencoding( "utf-8" )
@@ -86,7 +86,7 @@ def content():
 	for content_url in bookindexs:
 
 		content_req = urllib2.Request(content_url)
-		content_resp = urllib2.urlopen(content_req)
+		content_resp = opener.open(content_req)
 
 		contents = content_resp.read()
 		soup_content = BeautifulSoup(contents,"lxml")
@@ -104,7 +104,7 @@ def content():
 #- 计划实现抓取每天更新的内容，增量推送。
 def content_new():
 	content_new_req = urllib2.Request(bookindexs[0])
-	content_new_resp = urllib2.urlopen(content_new_req)
+	content_new_resp = opener.open(content_new_req)
 	contents = content_new_resp.read()
 	soup_content = BeautifulSoup(contents,"lxml")
 	soup_content.prettify()
@@ -118,10 +118,11 @@ def content_new():
 if __name__ == '__main__':
 	time.clock()
 	print "开始抓取！"
+	opener = login.login()
 	search(bookname)
 	index()
 
-	if bookstatus == 0:
+	if bookstatus == '0':
 		print "正在抓取全部章节内容，请耐心等待！"
 		content()
 	elif bookstatus == '1':
