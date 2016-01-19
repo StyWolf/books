@@ -120,7 +120,7 @@ def thread_content():
 	del bookindexs[0]
 	del index_names[0]
 #	print bookindexs
-	pool = ThreadPool(3)
+	pool = ThreadPool(5)
 	contents_resp = pool.map(rg, bookindexs)
 	pool.close()
 	pool.join()
