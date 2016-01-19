@@ -27,7 +27,8 @@ def new_index():
 	pattern = re.compile(r'\t')
 
 #写到文件
-	f = open('one.txt','a+')
+	f = open('one_new.txt','a+')
+	f.write('第' + str(new_num) + '篇' + '\r')
 	f.write(re.sub(pattern,'',soup.find('div',{'class':'comilla-cerrar'}).text) + "\n")
 	f.write(re.sub(pattern,'',soup.find('h2',{'class':'articulo-titulo'}).text) + "\r")
 	f.write("------" + re.sub(pattern,'',soup.find('p',{'class':'articulo-autor'}).text) + "\n")
@@ -40,6 +41,7 @@ def new_index():
 def previous_index():
 	num = url.split('.')[2]
 	i = 0
+	f = open('one_10.txt','a+')
 	while (i<10):
 		url_previous = 'http://wufazhuce.com/one/vol.' + str(num) + '#articulo'
 #		print url_previous
@@ -49,7 +51,6 @@ def previous_index():
 #排版 去除空格
 		pattern = re.compile(r'\t')
 #写到文件
-		f = open('one.txt','a+')
 		f.write('第' + str(num) + '篇' + '\r')
 		f.write(re.sub(pattern,'',soup.find('div',{'class':'comilla-cerrar'}).text) + "\n")
 		f.write(re.sub(pattern,'',soup.find('h2',{'class':'articulo-titulo'}).text) + "\r")
@@ -57,13 +58,24 @@ def previous_index():
 #正文 处理去掉多余的字符
 		soupcontent = soup.find('div',{'class':'articulo-contenido'})
 		f.write(re.sub(r'\<.+\>','',soupcontent.text) + "\n\n")
-		f.close()
 		num = int(num) - 1
 		i = i + 1
+	f.close()
+if __name__ == '__main__':
+	script, index = sys.argv
+	index.decode('utf-8')
+	new_num = url.split('.')[2]
+	pre_num = int(new_num) - 10
+	if index == '0':
+		print "获取最新章节: " + new_num
+		new_index()
+	elif index == '10':
+		print "获取最近10章： " + str(pre_num) + "-" + str(pre_num)
+		previous_index()
+	else:
+		print "输入有误：请输入 0 or 10！"
 
-
-previous_index()
 
 end = time.time()
-print "%.2f" %float(end-start)
+print "抓取时间： %.2f秒" %float(end-start)
 
