@@ -110,6 +110,8 @@ def thread_content():
 	del index_names[0]
 	pool = ThreadPool(5)
 	contents_resp = pool.map(opener.open, bookindexs)
+	pool.close()
+	pool.join()
 	for bookcontent in contents_resp:
 		contents = bookcontent.read()
 		soup_content = BeautifulSoup(contents,"lxml")
@@ -137,7 +139,7 @@ def content_new():
 
 
 if __name__ == '__main__':
-	time.clock()
+	start = time.time()
 	print "开始抓取！"
 	opener = login.login()
 	search(bookname)
@@ -154,4 +156,5 @@ if __name__ == '__main__':
 		print "请选择抓取全本或者最新章节（0 or 1）!"
 	
 	print "结束抓取！"
-	print "抓取耗时 %.2f s !" %(float(time.clock()))
+	end = time.time()
+	print "抓取耗时 %.2f s !" %(end-start)

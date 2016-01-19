@@ -30,7 +30,6 @@ sys.setdefaultencoding('utf-8')
 13、线程安全
 '''
 
-print "抓取开始!"
 #目录名
 bookindexs = []
 #目录地址
@@ -126,7 +125,7 @@ def thread_content():
 	pool.close()
 	pool.join()
 #	print type(contents_resp),contents_resp
-	f = open(bookname + '.txt','a+')
+	f = open(bookname + '.txt1','a+')
 	for bookcontent in contents_resp:
 		bookcontent.encoding = 'gbk'
 		contents = bookcontent.text
@@ -138,7 +137,7 @@ def thread_content():
 		f.write(contents_books + "\n")
 	f.close()
 
-print "抓取结束！"	
+
 
 
 
