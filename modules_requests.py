@@ -30,7 +30,7 @@ sys.setdefaultencoding('utf-8')
 13、线程安全
 '''
 
-
+print "抓取开始!"
 #目录名
 bookindexs = []
 #目录地址
@@ -121,7 +121,7 @@ def thread_content():
 	del bookindexs[0]
 	del index_names[0]
 #	print bookindexs
-	pool = ThreadPool(5)
+	pool = ThreadPool(3)
 	contents_resp = pool.map(rg, bookindexs)
 	pool.close()
 	pool.join()
@@ -137,7 +137,8 @@ def thread_content():
 		i = i +1
 		f.write(contents_books + "\n")
 	f.close()
-	
+
+print "抓取结束！"	
 
 
 
@@ -148,4 +149,4 @@ if __name__ == '__main__':
 	thread_content()
 	#content()
 	end = time.time()
-	print end-start
+	print "抓取用时：%.2f" %(end-start)
