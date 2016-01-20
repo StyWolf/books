@@ -38,11 +38,12 @@ def new_index():
 	f.write(re.sub(r'\<.+\>','',soupcontent.text))
 	f.close()
 
+#处理最新章节之前多少章节
 def previous_index():
 	num = url.split('.')[2]
 	i = 0
-	f = open('one_10.txt','a+')
-	while (i<10):
+	f = open('one_' + str(index) + '.txt','a+')
+	while (i<=int(index)):
 		url_previous = 'http://wufazhuce.com/one/vol.' + str(num) + '#articulo'
 #		print url_previous
 		r = requests.get(url_previous)
@@ -61,20 +62,21 @@ def previous_index():
 		num = int(num) - 1
 		i = i + 1
 	f.close()
+
+
 if __name__ == '__main__':
 	script, index = sys.argv
 	index.decode('utf-8')
 	new_num = url.split('.')[2]
-	pre_num = int(new_num) - 10
+	pre_num = int(new_num) - int(index)
 	if index == '0':
 		print "获取最新章节: " + new_num
 		new_index()
-	elif index == '10':
-		print "获取最近10章： " + str(pre_num) + "-" + str(pre_num)
+	elif index == index:
+		print "获取最近%s章： " % str(index) + str(pre_num) + "-" + str(new_num) 
 		previous_index()
 	else:
-		print "输入有误：请输入 0 or 10！"
-
+		print "输入有误：请输入想要获取最新之前的多少章节"
 
 end = time.time()
 print "抓取时间： %.2f秒" %float(end-start)
