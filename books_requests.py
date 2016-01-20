@@ -146,9 +146,9 @@ def thread_content():
 
 if __name__ == '__main__':
 	start = time.time()
-	bookname = u'玄界之门'
+	bookname = u'我欲封天'
 	index()
 	thread_content()
 	#content()
 	end = time.time()
-	print "抓取用时：%.2f" %(end-start)
+	print "抓取用时：%.2fs" %(end-start)
