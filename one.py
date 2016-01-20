@@ -43,6 +43,7 @@ def previous_index():
 	num = url.split('.')[2]
 	i = 0
 	f = open('one_' + str(index) + '.txt','a+')
+	f.write('“本程序抓取只用来测试之用！“\n\n' )
 	while (i<=int(index)):
 		url_previous = 'http://wufazhuce.com/one/vol.' + str(num) + '#articulo'
 #		print url_previous
@@ -52,7 +53,7 @@ def previous_index():
 #排版 去除空格
 		pattern = re.compile(r'\t')
 #写到文件
-		f.write('第' + str(num) + '篇' + '\r')
+		f.write('第' + str(num) + '篇\n')
 		f.write(re.sub(pattern,'',soup.find('div',{'class':'comilla-cerrar'}).text) + "\n")
 		f.write(re.sub(pattern,'',soup.find('h2',{'class':'articulo-titulo'}).text) + "\r")
 		f.write("------" + re.sub(pattern,'',soup.find('p',{'class':'articulo-autor'}).text) + "\n")
