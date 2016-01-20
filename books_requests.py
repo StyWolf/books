@@ -1,5 +1,5 @@
 ﻿#-*-coding=utf-8-*-
-import requests, sys, re, time
+import requests, sys, re, time, ConfigParser
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool
@@ -86,8 +86,8 @@ def index():
 	soup_bookname = BeautifulSoup(resp_bookname.text,'lxml')
 	soup_bookname.prettify()
 
-	print "BookName: ", soup_bookname.h1.text
-	print "BookAuthor: ", soup_bookname.p.text.decode("utf-8")
+#	print "BookName: ", soup_bookname.h1.text
+#	print "BookAuthor: ", soup_bookname.p.text.decode("utf-8")
 
 	for index in soup_bookname.find_all('a',href=re.compile('html')):
 		urlhtml =  bookname_url + index['href']
@@ -144,11 +144,58 @@ def thread_content():
 		f.write(contents_books + "\n")
 	f.close()
 
+def content_new():
+	contents = rg(new_url)
+	contents.encoding = 'gbk'
+	soup_content = BeautifulSoup(contents.text,"lxml")
+
+	soup_content.prettify()
+	contents_books = index_name + "\n" +  re.sub(r'readx\(\)\;', '', soup_content.find('div',{'id':'content'}).text + '\n')
+
+	f = open(bookname + "_" + "最新章节" + '.txt','a+')
+	f.write(contents_books + "\n")
+	f.close()
+
+
+
 if __name__ == '__main__':
 	start = time.time()
-	bookname = u'我欲封天'
-	index()
-	thread_content()
+#	bookname = u'我欲封天'
+#	index()
+	config = ConfigParser.ConfigParser()
+	with open('cfg.txt','r+') as cfgfile:
+		config.readfp(cfgfile)
+		section = config.options('info')
+
+	for option in section:
+		email =  config.get('info', option).split(',')[0]
+		bookname = option.decode('utf-8')
+		index()
+
+		n = re.search(r'\d+', str(index_names[0])).group(0)
+		#print n
+		
+		if int(n) == int(config.get('info', option).split(',')[1]):
+			new_url = bookindexs[0]
+			index_name = index_names[0]
+			content_new()
+		else:
+			i = int(n) - int(config.get('info', option).split(',')[1])
+			m = i + 1 
+			p = m 
+			for url in bookindexs[-m:]:
+				new_url = url
+				index_name = index_names[-p]
+				content_new()
+				p = p - 1
+			config.set('info', option, email + ',' + n)
+			config.write(open('cfg.txt','w'))
+		bookindexs[:] = []
+		index_names[:] = []
+		
+
+#	print index_names
+	#thread_content()
 	#content()
 	end = time.time()
 	print "抓取用时：%.2fs" %(end-start)
