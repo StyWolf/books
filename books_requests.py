@@ -112,7 +112,14 @@ def content():
 	f.close()	
 
 def rg(url):
-	return requests.get(url,cookies=cookies)
+	headers = {
+		'User-Agent' : 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36',
+		'Connection' : 'keep-alive',
+		'Accept'	 : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+		'Accept-Encoding' : 'gzip, deflate, sdch',
+		'Accept-Language' : 'zh-CN,zh;q=0.8'
+	}
+	return requests.get(url,cookies=cookies,headers=headers)
 
 #线程池
 def thread_content():
@@ -125,7 +132,7 @@ def thread_content():
 	pool.close()
 	pool.join()
 #	print type(contents_resp),contents_resp
-	f = open(bookname + '.txt1','a+')
+	f = open(bookname + '.txt','a+')
 	for bookcontent in contents_resp:
 		bookcontent.encoding = 'gbk'
 		contents = bookcontent.text
@@ -137,13 +144,9 @@ def thread_content():
 		f.write(contents_books + "\n")
 	f.close()
 
-
-
-
-
 if __name__ == '__main__':
 	start = time.time()
-	bookname = u'我欲封天'
+	bookname = u'玄界之门'
 	index()
 	thread_content()
 	#content()
