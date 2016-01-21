@@ -39,6 +39,7 @@ def pushconfig():
 		#	pushdata['server'] = config.get('server',bookname)
 		#else:
 		#	pass
+		#print type(pushdata['fn'])
 
 if __name__ == '__main__':
 	start = time.time()
@@ -46,6 +47,7 @@ if __name__ == '__main__':
 	password = 'zh123456'
 	books_requests.catch()
 	pushconfig()
+	#print type(pushdata['fn'])
 	end = time.time()
 	print "抓取用时：%.2fs" %(end-start)
 

@@ -18,7 +18,7 @@ def sendmail(username,password,data):
 	f = open(data['fn'].decode(),'rb')
 	att= MIMEText(f.read(),'base64',data['encode'])
 	att["Content-Type"] = 'application/octet-stream'
-	att["Content-Disposition"] = 'attachment; filename=' + data['fn'].decode().encode('gbk')
+	att["Content-Disposition"] = 'attachment; filename=' + data['filename'].decode('utf-8')
 	msg.attach(att)
 		
 
