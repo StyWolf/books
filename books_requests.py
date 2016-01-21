@@ -1,5 +1,5 @@
 ﻿#-*-coding=utf-8-*-
-import requests, sys, re, time, ConfigParser
+import requests, sys, re, time, ConfigParser, zhconvertnum
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool
@@ -171,8 +171,12 @@ if __name__ == '__main__':
 		email =  config.get('info', option).split(',')[0]
 		bookname = option.decode('utf-8')
 		index()
-
-		n = re.search(r'\d+', str(index_names[0])).group(0)
+	#	print index_names
+		pattern = re.compile(ur'(?<=^第)[一二三四五六七八九十百千万]+(?=章)')
+		s = pattern.findall(index_names[0])
+#		print "s的值是： " + s[0]
+		n = zhconvertnum.zhconvertnum(s[0])
+		#n = re.search(r'\d+', str(index_names[0])).group(0)
 		#print n
 		
 		if int(n) == int(config.get('info', option).split(',')[1]):
@@ -188,7 +192,7 @@ if __name__ == '__main__':
 				index_name = index_names[-p]
 				content_new()
 				p = p - 1
-			config.set('info', option, email + ',' + n)
+			config.set('info', option, email + ',' + str(n))
 			config.write(open('cfg.txt','w'))
 		bookindexs[:] = []
 		index_names[:] = []
