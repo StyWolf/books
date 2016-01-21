@@ -142,10 +142,8 @@ def content_new():
 
 if __name__ == '__main__':
 	start = time.time()
-#	bookname = u'我欲封天'
-#	index()
 	config = ConfigParser.ConfigParser()
-	with open('cfg.txt','r+') as cfgfile:
+	with open('cfg.ini','r+') as cfgfile:
 		config.readfp(cfgfile)
 		section = config.options('info')
 
@@ -161,7 +159,7 @@ if __name__ == '__main__':
 		if index_L != None:
 			n = re.search(r'\d+', str(index_names[0])).group(0)
 		else:
-			pattern = re.compile(ur'(?<=^第)[一二三四五六七八九十百千万]+(?=章)')
+			pattern = re.compile(ur'(?<=^第)[零两一二三四五六七八九十百千万]+(?=章)')
 			s = pattern.findall(index_names[0])
 			n = zhconvertnum.zhconvertnum(s[0])
 
@@ -180,13 +178,11 @@ if __name__ == '__main__':
 				content_new()
 				p = p - 1
 			config.set('info', option, email + ',' + str(n))
-			config.write(open('cfg.txt','w'))
+			config.write(open('cfg.ini','w'))
 		bookindexs[:] = []
 		index_names[:] = []
 		
 
-#	print index_names
-	#thread_content()
-	#content()
+
 	end = time.time()
 	print "抓取用时：%.2fs" %(end-start)
