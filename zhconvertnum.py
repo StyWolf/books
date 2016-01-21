@@ -5,15 +5,7 @@ import sys,re
 reload(sys)
 sys.setdefaultencoding( "utf-8" )
 
-
-#string = re.search(u'^第.+章$',b).group(0)
-
-
-
-
 dict ={u'零':0,u'一':1,u'二':2,u'三':3,u'四':4,u'五':5,u'六':6,u'七':7,u'八':8,u'九':9,u'十':10,u'百':100,u'千':1000,u'万':10000,u'亿':100000000}
-
-
 def zhconvertnum(string):
 	tmp = []
 	count = 0
@@ -45,20 +37,15 @@ def zhconvertnum(string):
 #string = u'五千三百六十五'
 #y = zhconvertnum(str)
 #print string
+#findall
+p = ur'([一二三四五六七八九十百千万]+)'
+a = u'第三十九章 塞外 章'
+s = re.findall(p,a)
+print s[0]
+b = zhconvertnum(s[0])
+print b
 
-b = u'第三十五章 晋升外宗'
-'''
-c = ''
-x = 0 
-while len(b) > x:
-	if dict.has_key(b[x]):
-		c = b[x]
-		d = c + b[x]
-	else:
-		pass
-	
-	x = x + 1
-print d
-'''
-str = re.search(ur'[一二三四五六七八九十百千万亿]',str(b)).group(0)
-print str.decode('utf-8').encode('utf-8')
+#断言
+req = re.compile(ur'(?<=^第)[一二三四五六七八九十百千万]+(?=章)')
+c =  req.findall(a)[0]
+print zhconvertnum(c)
