@@ -18,6 +18,7 @@ bookindexs = []
 index_names = []
 #最近在练习爬虫 抓小说 就以笔趣阁为例吧
 
+
 def login():
 	login_url = 'http://www.biquge.la/login.php?do=submit&action=login'
 	url = 'http://www.biquge.la/'
@@ -76,6 +77,7 @@ def index():
 		index_names.append(index.string)
 		bookindexs.append(urlhtml)
 
+#抓取全部内容，抓取的慢 1000章以上出现断线
 def content():
 	i = 0
 	f = open(bookname + '.txt','a+')
@@ -126,6 +128,7 @@ def thread_content():
 		f.write(contents_books + "\n")
 	f.close()
 
+#抓取新章节
 def content_new():
 	contents = rg(new_url)
 	contents.encoding = 'gbk'
@@ -139,9 +142,7 @@ def content_new():
 	f.close()
 
 
-
-if __name__ == '__main__':
-	start = time.time()
+def catch():
 	config = ConfigParser.ConfigParser()
 	with open('cfg.ini','r+') as cfgfile:
 		config.readfp(cfgfile)
@@ -149,6 +150,7 @@ if __name__ == '__main__':
 
 	for option in section:
 		email =  config.get('info', option).split(',')[0]
+		global bookname
 		bookname = option.decode('utf-8')
 		index()
 		
@@ -173,6 +175,8 @@ if __name__ == '__main__':
 			m = i + 1 
 			p = m 
 			for url in bookindexs[-m:]:
+				global new_url
+				global index_name
 				new_url = url
 				index_name = index_names[-p]
 				content_new()
@@ -181,8 +185,10 @@ if __name__ == '__main__':
 			config.write(open('cfg.ini','w'))
 		bookindexs[:] = []
 		index_names[:] = []
-		
-
-
+'''		
+if __name__ == '__main__':
+	start = time.time()
+	catch()
 	end = time.time()
 	print "抓取用时：%.2fs" %(end-start)
+'''
