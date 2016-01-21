@@ -11,24 +11,6 @@ sys.setdefaultencoding('utf-8')
 # Python modules requests
 # 之前一直用urllib2，看了requests的介绍，感叹urllib2真的难用了呀。
 # 主要参考官方文档：http://cn.python-requests.org/zh_CN/latest/
-'''
-#以下是官网给出的特性
-功能特性
-
-1、国际化域名和URLs
-2、Keep-Alive & 连接池
-3、持久的Cookie会话 
-4、类浏览器式的SSL加密认证
-5、基本/摘要式的身份认证
-6、优雅的键/值Cookie
-7、自动解压
-8、Unicode编码的响应体
-9、多段文件上传
-10、连接超时
-11、支持.netrc
-12、适用于Python2.7和Python3.4
-13、线程安全
-'''
 
 #目录名
 bookindexs = []
@@ -171,18 +153,23 @@ if __name__ == '__main__':
 		email =  config.get('info', option).split(',')[0]
 		bookname = option.decode('utf-8')
 		index()
-	#	print index_names
-		pattern = re.compile(ur'(?<=^第)[一二三四五六七八九十百千万]+(?=章)')
-		s = pattern.findall(index_names[0])
-#		print "s的值是： " + s[0]
-		n = zhconvertnum.zhconvertnum(s[0])
+		
 		#n = re.search(r'\d+', str(index_names[0])).group(0)
 		#print n
-		
+		index_L = re.search(r'\d+', str(index_names[0]))
+		#print index_L
+		if index_L != None:
+			n = re.search(r'\d+', str(index_names[0])).group(0)
+		else:
+			pattern = re.compile(ur'(?<=^第)[一二三四五六七八九十百千万]+(?=章)')
+			s = pattern.findall(index_names[0])
+			n = zhconvertnum.zhconvertnum(s[0])
+
 		if int(n) == int(config.get('info', option).split(',')[1]):
-			new_url = bookindexs[0]
-			index_name = index_names[0]
-			content_new()
+			pass
+			#new_url = bookindexs[0]
+			#index_name = index_names[0]
+			#content_new()
 		else:
 			i = int(n) - int(config.get('info', option).split(',')[1])
 			m = i + 1 
