@@ -6,7 +6,7 @@ smtp发送邮件
 import smtplib,sys
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
+from email.header import Header
 
 reload(sys)
 sys.setdefaultencoding( "utf-8" )
@@ -18,13 +18,13 @@ def sendmail(username,password,data):
 	f = open(data['fn'].decode(),'rb')
 	att= MIMEText(f.read(),'base64',data['encode'])
 	att["Content-Type"] = 'application/octet-stream'
-	att["Content-Disposition"] = 'attachment; filename=' + data['filename'].decode('utf-8')
+	att["Content-Disposition"] = 'attachment; filename=' + str(Header(data['filename'],'utf-8'))
 	msg.attach(att)
 		
 
 	msg['to'] = data['to']
 	msg['from'] = data['from']
-	msg['subject'] = data['subject']
+	msg['subject'] = Header(data['subject'],'utf-8')
 
 	try:
 		server = smtplib.SMTP()
