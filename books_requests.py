@@ -181,6 +181,7 @@ def catch():
 				index_name = index_names[-p]
 				content_new()
 				p = p - 1
+				time.sleep(3)
 			config.set('info', option, email + ',' + str(n))
 			config.write(open('cfg.ini','w'))
 		bookindexs[:] = []
