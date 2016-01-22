@@ -1,5 +1,5 @@
 ﻿#-*-coding=utf-8-*-
-import requests, sys, re, time, ConfigParser, zhconvertnum
+import requests, sys, re, time, ConfigParser, zhconvertnum, os.path
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool
@@ -130,14 +130,14 @@ def thread_content():
 
 #抓取新章节
 def content_new():
+
+	f = open(bookname + "_" + "最新章节" + '.txt','w')
 	contents = rg(new_url)
 	contents.encoding = 'gbk'
 	soup_content = BeautifulSoup(contents.text,"lxml")
 
 	soup_content.prettify()
 	contents_books = index_name + "\n" +  re.sub(r'readx\(\)\;', '', soup_content.find('div',{'id':'content'}).text + '\n')
-
-	f = open(bookname + "_" + "最新章节" + '.txt','a+')
 	f.write(contents_books + "\n")
 	f.close()
 
@@ -165,7 +165,7 @@ def catch():
 			s = pattern.findall(index_names[0])
 			n = zhconvertnum.zhconvertnum(s[0])
 
-		if int(n) == int(config.get('info', option).split(',')[1]):
+		if int(n) == int(config.get('info', option).split(',')[1]) and os.path.exists(bookname + "_" + "最新章节" + '.txt'):
 			pass
 			#new_url = bookindexs[0]
 			#index_name = index_names[0]

@@ -2,7 +2,7 @@
 #-*-coding=utf-8-*-
 
 
-import sys, booksmtp, books_requests, time, ConfigParser
+import sys, booksmtp, books_requests, time, ConfigParser, os.path
 
 
 reload(sys)
@@ -30,11 +30,13 @@ def pushconfig():
 	for option in section:
 		email =  config.get('info', option).split(',')[0]
 		bookname = option.decode('utf-8')
+		
 		pushdata['to'] = email
 		pushdata['subject'] = bookname + '.txt'
 		pushdata['fn'] = bookname + '_最新章节.txt' 
 		pushdata['filename'] = bookname + '.txt'
 		booksmtp.sendmail(username, password, pushdata)
+#		os.remove(bookname + "_" + "最新章节" + '.txt')
 		#if config.get('server',bookname):
 		#	pushdata['server'] = config.get('server',bookname)
 		#else:
