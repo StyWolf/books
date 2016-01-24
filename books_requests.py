@@ -1,5 +1,5 @@
 ﻿#-*-coding=utf-8-*-
-import requests, sys, re, time, ConfigParser, zhconvertnum, os.path
+import requests, sys, re, time, ConfigParser, zhtonum, os.path
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool
@@ -170,7 +170,7 @@ def catch():
 		else:
 			pattern = re.compile(ur'(?<=^第)[零两一二三四五六七八九十百千万]+(?=章)')
 			s = pattern.findall(index_names[0])
-			n = zhconvertnum.zhconvertnum(s[0])
+			n = zhtonum,zhtonum(s[0])
 
 		if int(n) == int(config.get('info', option).split(',')[1]) and os.path.exists(bookname + "_" + "最新章节" + '.txt'):
 			pass
@@ -188,7 +188,7 @@ def catch():
 				index_name = index_names[-p]
 				content_new()
 				p = p - 1
-				time.sleep(3)
+#				time.sleep(3)
 			config.set('info', option, email + ',' + str(n))
 			config.write(open('cfg.ini','w'))
 		bookindexs[:] = []
