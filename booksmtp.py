@@ -35,5 +35,3 @@ def sendmail(username,password,data):
 		print '发送成功!'
 	except Exception, e:
 		print str(e)
-
-#sendmail('bookspush@163.com', 'zh123456',postdata)

@@ -46,7 +46,7 @@ def pushconfig():
 if __name__ == '__main__':
 	start = time.time()
 	username = 'bookspush@163.com'
-	password = 'zh123456'
+	password = ''
 	books_requests.catch()
 	pushconfig()
 	#print type(pushdata['fn'])
