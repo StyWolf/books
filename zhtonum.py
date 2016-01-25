@@ -46,7 +46,7 @@ def zhconvertnum(chr):
 
 #亿以下转换
 def zhtonumwan(wan):
-	if wan.index(u'万') >= 2 :
+	if re.findall(u'万',wan) and wan.index(u'万') >= 2 :
 		index = wan.index(u'万')
 		wandown = wan[index+1:]
 		wanup = wan[:index]
@@ -58,7 +58,7 @@ def zhtonumwan(wan):
 
 #千亿以下转换
 def zhtonum(string):
-	if string.index(u'亿') >= 1 :
+	if re.findall(u'亿',string) and string.index(u'亿') >= 1 :
 		index = string.index(u'亿')
 		yidown = string[index+1:]
 		yiup = string[:index]
@@ -66,12 +66,8 @@ def zhtonum(string):
 		num =  zhconvertnum(yiup) * 100000000 + wan
 		return ",".join(textwrap.wrap(str(num),3))
 	else:
-		num  = zhtonumwan(yi)
+		num  = zhtonumwan(string)
 		return ",".join(textwrap.wrap(str(num),3))
-
-
-
-
 
 
 
