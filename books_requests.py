@@ -1,5 +1,5 @@
 ﻿#-*-coding=utf-8-*-
-import requests, sys, re, time, ConfigParser, zhtonum, os.path
+import requests, sys, re, time, ConfigParser, zhtonum, os.path,hashlib
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool
@@ -138,7 +138,7 @@ def thread_content():
 #抓取新章节
 def content_new():
 
-	f = open(bookname + "_" + "最新章节" + '.txt','w')
+	f = open(bookname + '.txt','a+')
 	contents = rg(new_url)
 	contents.encoding = 'gbk'
 	soup_content = BeautifulSoup(contents.text,"lxml")
@@ -147,6 +147,7 @@ def content_new():
 	contents_books = index_name + "\n" +  re.sub(r'readx\(\)\;', '', soup_content.find('div',{'id':'content'}).text + '\n')
 	f.write(contents_books + "\n")
 	f.close()
+	
 
 
 def catch():
@@ -167,12 +168,14 @@ def catch():
 		#print index_L
 		if index_L != None:
 			n = re.search(r'\d+', str(index_names[0])).group(0)
+		
 		else:
 			pattern = re.compile(ur'(?<=^第)[零两一二三四五六七八九十百千万]+(?=章)')
 			s = pattern.findall(index_names[0])
-			n = zhtonum,zhtonum(s[0])
+			n = zhtonum.zhtonum(s[0])
+		
 
-		if int(n) == int(config.get('info', option).split(',')[1]) and os.path.exists(bookname + "_" + "最新章节" + '.txt'):
+		if int(n) == int(config.get('info', option).split(',')[1]) and os.path.exists(bookname + '.txt'):
 			pass
 			#new_url = bookindexs[0]
 			#index_name = index_names[0]
@@ -191,12 +194,21 @@ def catch():
 #				time.sleep(3)
 			config.set('info', option, email + ',' + str(n))
 			config.write(open('cfg.ini','w'))
+				#计算md5
+			with open(bookname+ '.txt','rb') as f:
+				md5 = hashlib.md5()
+				md5.update(f.read())
+				hashmd5 =  md5.hexdigest()
+				print hashmd5
+			config.set('hash', bookname,hashmd5)
+			config.write(open('cfg.ini','w'))
 		bookindexs[:] = []
 		index_names[:] = []
-'''		
+
+
 if __name__ == '__main__':
 	start = time.time()
 	catch()
 	end = time.time()
 	print "抓取用时：%.2fs" %(end-start)
-'''
+

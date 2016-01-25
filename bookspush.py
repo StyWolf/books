@@ -33,7 +33,7 @@ def pushconfig():
 		
 		pushdata['to'] = email
 		pushdata['subject'] = bookname + '.txt'
-		pushdata['fn'] = bookname + '_最新章节.txt' 
+		pushdata['fn'] = bookname + '.txt' 
 		pushdata['filename'] = bookname + '.txt'
 		booksmtp.sendmail(username, password, pushdata)
 #		os.remove(bookname + "_" + "最新章节" + '.txt')

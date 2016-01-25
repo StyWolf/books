@@ -64,10 +64,12 @@ def zhtonum(string):
 		yiup = string[:index]
 		wan = zhtonumwan(yidown)
 		num =  zhconvertnum(yiup) * 100000000 + wan
-		return ",".join(textwrap.wrap(str(num),3))
+		return num
+		# return ",".join(textwrap.wrap(str(num),3))
 	else:
 		num  = zhtonumwan(string)
-		return ",".join(textwrap.wrap(str(num),3))
+		return num
+		# return ",".join(textwrap.wrap(str(num),3))
 
 
 
