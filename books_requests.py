@@ -1,4 +1,5 @@
-﻿#-*-coding=utf-8-*-
+﻿#!/usr/bin/env python
+#-*-coding=utf-8-*-
 import requests, sys, re, time, ConfigParser, zhtonum, os.path,hashlib
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
@@ -159,6 +160,7 @@ def catch():
 	for option in section:
 		email =  config.get('info', option).split(',')[0]
 		global bookname
+		
 		bookname = option.decode('utf-8')
 		index()
 		
@@ -176,6 +178,16 @@ def catch():
 		
 
 		if int(n) == int(config.get('info', option).split(',')[1]) and os.path.exists(bookname + '.txt'):
+			'''
+			# config.remove_option('hash', option)
+			with open(bookname+ '.txt','rb') as f:
+				md5 = hashlib.md5()
+				md5.update(f.read())
+				hashmd5 =  md5.hexdigest()
+				print hashmd5
+			config.set('hash', bookname,hashmd5)
+			config.write(open('cfg.ini','w'))
+			'''
 			pass
 			#new_url = bookindexs[0]
 			#index_name = index_names[0]
@@ -192,23 +204,25 @@ def catch():
 				content_new()
 				p = p - 1
 #				time.sleep(3)
+			
 			config.set('info', option, email + ',' + str(n))
+			config.remove_option('hash', option)
 			config.write(open('cfg.ini','w'))
 				#计算md5
 			with open(bookname+ '.txt','rb') as f:
 				md5 = hashlib.md5()
 				md5.update(f.read())
 				hashmd5 =  md5.hexdigest()
-				print hashmd5
+				# print hashmd5
 			config.set('hash', bookname,hashmd5)
 			config.write(open('cfg.ini','w'))
 		bookindexs[:] = []
 		index_names[:] = []
 
-
+'''
 if __name__ == '__main__':
 	start = time.time()
 	catch()
 	end = time.time()
 	print "抓取用时：%.2fs" %(end-start)
-
+'''
