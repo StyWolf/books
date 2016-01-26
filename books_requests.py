@@ -206,16 +206,8 @@ def catch():
 #				time.sleep(3)
 			
 			config.set('info', option, email + ',' + str(n))
-			config.remove_option('hash', option)
 			config.write(open('cfg.ini','w'))
-				#计算md5
-			with open(bookname+ '.txt','rb') as f:
-				md5 = hashlib.md5()
-				md5.update(f.read())
-				hashmd5 =  md5.hexdigest()
-				# print hashmd5
-			config.set('hash', bookname,hashmd5)
-			config.write(open('cfg.ini','w'))
+		
 		bookindexs[:] = []
 		index_names[:] = []
 

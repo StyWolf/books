@@ -37,7 +37,7 @@ def pushconfig():
 		pushdata['subject'] = bookname + '.txt'
 		pushdata['fn'] = bookname + '.txt' 
 		pushdata['filename'] = bookname + '.txt'
-
+		booksmtp.sendmail(username, password, pushdata)
 	'''
 		if books_requests.catch.old_hashmd5 == books_requests.catch.hashmd5:
 			pass
