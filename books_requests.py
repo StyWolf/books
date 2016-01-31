@@ -52,7 +52,14 @@ def search(name):
 		'click' : '1',
 		'nsid' : ''
 	}
-	resp = requests.get(search_url,params=payload,cookies=cookies)
+	headers = {
+		'User-Agent' : 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0' ,
+		'Connection' : 'keep-alive',
+		'Accept'	 : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+		'Accept-Encoding' : 'gzip, deflate, sdch',
+		'Accept-Language' : 'zh-CN,zh;q=0.8'
+	}
+	resp = requests.get(search_url,params=payload,cookies=cookies,headers=headers)
 	resp.encoding = 'utf8'
 	contents = resp.text
 	return contents
@@ -191,7 +198,7 @@ def catch():
 				os.remove(bookname + '.txt')
 			else:
 				pass
-			
+
 			for url in bookindexs[-m:]:
 				global new_url
 				global index_name
