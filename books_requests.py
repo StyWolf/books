@@ -1,6 +1,6 @@
 ﻿#!/usr/bin/env python
 #-*-coding=utf-8-*-
-import requests, sys, re, time, ConfigParser, zhtonum, os.path,hashlib
+import requests, sys, re, time, ConfigParser, zhtonum, os.path
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool
@@ -156,7 +156,8 @@ def catch():
 	with open('cfg.ini','r+') as cfgfile:
 		config.readfp(cfgfile)
 		section = config.options('info')
-
+	config.remove_section('pushname')
+	config.add_section('pushname')
 	for option in section:
 		email =  config.get('info', option).split(',')[0]
 		global bookname
@@ -178,16 +179,6 @@ def catch():
 		
 
 		if int(n) == int(config.get('info', option).split(',')[1]) and os.path.exists(bookname + '.txt'):
-			'''
-			# config.remove_option('hash', option)
-			with open(bookname+ '.txt','rb') as f:
-				md5 = hashlib.md5()
-				md5.update(f.read())
-				hashmd5 =  md5.hexdigest()
-				print hashmd5
-			config.set('hash', bookname,hashmd5)
-			config.write(open('cfg.ini','w'))
-			'''
 			pass
 			#new_url = bookindexs[0]
 			#index_name = index_names[0]
@@ -196,6 +187,7 @@ def catch():
 			i = int(n) - int(config.get('info', option).split(',')[1])
 			m = i + 1 
 			p = m 
+			
 			for url in bookindexs[-m:]:
 				global new_url
 				global index_name
@@ -204,7 +196,7 @@ def catch():
 				content_new()
 				p = p - 1
 #				time.sleep(3)
-			
+				config.set('pushname', bookname)
 			config.set('info', option, email + ',' + str(n))
 			config.write(open('cfg.ini','w'))
 		
