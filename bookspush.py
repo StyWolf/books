@@ -37,7 +37,7 @@ def pushconfig():
 		#print "PushBook start------>"  + bookname
 		booksmtp.sendmail(username, password, pushdata)
 		#print "PushBook end------>" + bookname
-
+		#os.remove(bookname + '.txt')
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 ﻿#!/usr/bin/env python
 #-*-coding=utf-8-*-
-import requests, sys, re, time, ConfigParser, zhtonum, os.path
+import requests, sys, re, time, ConfigParser, zhtonum, os.path,os
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool
@@ -187,6 +187,10 @@ def catch():
 			i = int(n) - int(config.get('info', option).split(',')[1])
 			m = i + 1 
 			p = m 
+			if os.path.exists(bookname + '.txt'):
+				os.remove(bookname + '.txt')
+			else:
+				pass
 			
 			for url in bookindexs[-m:]:
 				global new_url
@@ -199,7 +203,7 @@ def catch():
 				config.set('pushname', bookname)
 			config.set('info', option, email + ',' + str(n))
 			config.write(open('cfg.ini','w'))
-		
+			
 		bookindexs[:] = []
 		index_names[:] = []
 
